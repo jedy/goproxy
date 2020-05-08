@@ -1,3 +1,3 @@
-github.com/elazarl/goproxy/ext v0.0.0-20190711103511-473e67f1d7d2 h1:dWB6v3RcOy03t/bUadywsbyrQwCqZeNIEX6M1OtSZOM=
-github.com/elazarl/goproxy/ext v0.0.0-20190711103511-473e67f1d7d2/go.mod h1:gNh8nYJoAm43RfaxurUnxr+N1PwuFV3ZMl/efxlIlY8=
+github.com/jedy/goproxy/ext v0.0.0-20200508020952-ecc6eba7e0a8 h1:pJ9+2g29VBDQ+Ujo73v6LcXAvmbAS5vgGhs1IkHyLY8=
+github.com/jedy/goproxy/ext v0.0.0-20200508020952-ecc6eba7e0a8/go.mod h1:P0B3fF+M5cN6nd1hsiDDu6jBBi5RNCbyNm+PEPIuG1Y=
 github.com/rogpeppe/go-charset v0.0.0-20180617210344-2471d30d28b4/go.mod h1:qgYeAmZ5ZIpBWTGllZSQnw97Dj+woV0toclVaRGI8pc=

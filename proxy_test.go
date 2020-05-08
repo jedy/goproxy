@@ -8,8 +8,6 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	"fmt"
-	"github.com/elazarl/goproxy"
-	goproxy_image "github.com/elazarl/goproxy/ext/image"
 	"image"
 	"io"
 	"io/ioutil"
@@ -23,6 +21,9 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/jedy/goproxy"
+	goproxy_image "github.com/jedy/goproxy/ext/image"
 )
 
 var acceptAllCerts = &tls.Config{InsecureSkipVerify: true}

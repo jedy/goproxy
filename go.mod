@@ -1,3 +1,3 @@
-module github.com/elazarl/goproxy
+module github.com/jedy/goproxy
 
-require github.com/elazarl/goproxy/ext v0.0.0-20190711103511-473e67f1d7d2
+require github.com/jedy/goproxy/ext v0.0.0-20200508020952-ecc6eba7e0a8
