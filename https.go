@@ -37,8 +37,8 @@ var (
 )
 
 // ConnectAction enables the caller to override the standard connect flow.
-// When Action is ConnectHijack, it is up to the implementer to send the 
-// HTTP 200, or any other valid http response back to the client from within the 
+// When Action is ConnectHijack, it is up to the implementer to send the
+// HTTP 200, or any other valid http response back to the client from within the
 // Hijack func
 type ConnectAction struct {
 	Action    ConnectActionLiteral
@@ -423,28 +423,31 @@ func (proxy *ProxyHttpServer) NewConnectDialToProxyWithHandler(https_proxy strin
 
 func TLSConfigFromCA(ca *tls.Certificate) func(host string, ctx *ProxyCtx) (*tls.Config, error) {
 	return func(host string, ctx *ProxyCtx) (*tls.Config, error) {
-		var err error
-		var cert *tls.Certificate
-
-		hostname := stripPort(host)
 		config := defaultTLSConfig.Clone()
-		ctx.Logf("signing for %s", stripPort(host))
-
-		genCert := func() (*tls.Certificate, error) {
-			return signHost(*ca, []string{hostname})
+		hostname := stripPort(host)
+		config.GetCertificate = func(hello *tls.ClientHelloInfo) (*tls.Certificate, error) {
+			// if hostname is ipaddress and we have servername from HelloInfo
+			if ip := net.ParseIP(hostname); ip != nil && hello.ServerName != "" {
+				hostname = hello.ServerName
+			}
+			config.ServerName = hostname
+			ctx.Logf("signing for %s", hostname)
+			genCert := func() (*tls.Certificate, error) {
+				return signHost(*ca, []string{hostname})
+			}
+			var cert *tls.Certificate
+			var err error
+			if ctx.certStore != nil {
+				cert, err = ctx.certStore.Fetch(hostname, genCert)
+			} else {
+				cert, err = genCert()
+			}
+			if err != nil {
+				ctx.Warnf("Cannot sign host certificate with provided CA: %s", err)
+				return nil, err
+			}
+			return cert, nil
 		}
-		if ctx.certStore != nil {
-			cert, err = ctx.certStore.Fetch(hostname, genCert)
-		} else {
-			cert, err = genCert()
-		}
-
-		if err != nil {
-			ctx.Warnf("Cannot sign host certificate with provided CA: %s", err)
-			return nil, err
-		}
-
-		config.Certificates = append(config.Certificates, *cert)
 		return config, nil
 	}
 }
